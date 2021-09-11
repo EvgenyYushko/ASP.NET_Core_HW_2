@@ -1,0 +1,30 @@
+﻿@model FeedbackApp.BLL.VMs.Feedback.FeedbackVM
+
+
+@{
+    ViewData["Title"] = "Feedback";
+}
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Feedback page</p>
+
+    <div class="registration-cssave">
+        <form method="post" asp-controller="Feedback" asp-action="CreateFeedBack" >
+            <h3 class="text-center">Создать фидбэк</h3>
+            <div class="form-group">
+                <input asp-for="Text">
+            </div>
+            <div class="form-group">
+                <button type="submit">Создать фидбэк</button>
+            </div>
+        </form>
+    </div>
+
+}
+else
+{
+    <a asp-controller="Account" asp-action="Login">Вход</a>
+    <a asp-controller="Account" asp-action="Register">Регистрация</a>
+}
