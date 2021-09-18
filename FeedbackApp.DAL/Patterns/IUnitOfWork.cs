@@ -12,8 +12,5 @@ namespace FeedbackApp.DAL.Patterns
         IRepository<MediaFile> MediaFiles { get; }
         IRepository<Feedback> Feedbacks { get; }
         IRepository<Comment> Comments { get; }
-
-        Task SaveAsync();
     }
-
 }

@@ -24,14 +24,7 @@ namespace FeedbackApp.DAL.Patterns
         public IRepository<Feedback> Feedbacks => _feedbacks ?? (_feedbacks = new Repository<Feedback>(_db));
         public IRepository<Comment> Comments => _comments ?? (_comments = new Repository<Comment>(_db));
 
-        public async Task SaveAsync()
-        {
-            await _db.SaveChangesAsync();
-        }
-
-
         private bool _disposed = false;
-
 
         public virtual void Dispose(bool disposing)
         {
