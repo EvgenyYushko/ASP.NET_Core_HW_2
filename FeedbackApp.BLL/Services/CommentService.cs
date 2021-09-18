@@ -5,7 +5,6 @@ using FeedbackApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FeedbackApp.BLL.Services
@@ -42,7 +41,7 @@ namespace FeedbackApp.BLL.Services
         {
             try
             {
-                var dbComments = db.Comments.GetAll().Where(func). 
+                var dbComments = db.Comments.GetAll().Where(func).
                                                       Select(m =>
                                                       {
                                                           return new InfoComment()

@@ -5,7 +5,6 @@ using FeedbackApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FeedbackApp.BLL.Services
@@ -25,9 +24,7 @@ namespace FeedbackApp.BLL.Services
                 var dbMediaFile = new MediaFile()
                 {
                     FeedbackId = mediaFile.FeedbackId.Value,
-                    //Name = mediaFile.Name,
                     Path = mediaFile.Path,
-                    //Type = mediaFile.Type
                 };
                 dbMediaFile = await db.MediaFiles.CreateAsync(dbMediaFile);
                 return dbMediaFile.Id;
@@ -42,17 +39,16 @@ namespace FeedbackApp.BLL.Services
         {
             try
             {
-                var dbMediaFiles = db.MediaFiles.GetAll().Where(func). 
-                                                      Select(m =>
-                                                      {
-                                                          return new CreateMediaFile()
-                                                          {
-                                                              FeedbackId = m.FeedbackId,
-                                                              //Name = m.Name,
-                                                              Path = m.Path,
-                                                              //Type = m.Type
-                                                          };
-                                                      }).ToList();
+                var dbMediaFiles = db.MediaFiles.GetAll()
+                    .Where(func).
+                    Select(m =>
+                    {
+                        return new CreateMediaFile()
+                        {
+                            FeedbackId = m.FeedbackId,
+                            Path = m.Path,
+                        };
+                    }).ToList();
                 return dbMediaFiles;
             }
             catch (Exception ex)

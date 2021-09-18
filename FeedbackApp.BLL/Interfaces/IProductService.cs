@@ -8,7 +8,7 @@ namespace FeedbackApp.BLL.Interfaces
 {
     public interface IProductService
     {
-        Task<Guid> CreateProductAsync(CreateProduct product);  //вернем ID созданного продукта
+        Task<Guid> CreateProductAsync(CreateProduct product);
         List<CreateProduct> FindProductsByFunc(Func<Product, bool> func);
     }
 }

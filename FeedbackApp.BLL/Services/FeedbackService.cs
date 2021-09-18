@@ -1,14 +1,12 @@
 ﻿using FeedbackApp.BLL.Interfaces;
 using FeedbackApp.BLL.VMs.Comment;
 using FeedbackApp.BLL.VMs.Feedback;
-using FeedbackApp.BLL.VMs.MediaFile;
 using FeedbackApp.BLL.VMs.Product;
 using FeedbackApp.DAL.Patterns;
 using FeedbackApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FeedbackApp.BLL.Services
@@ -30,7 +28,7 @@ namespace FeedbackApp.BLL.Services
             try
             {
                 var productId = await productService.CreateProductAsync(new CreateProduct() { Name = feedback.ProductName, Category = feedback.ProductCategory });
-               
+
                 var dbFeedback = new Feedback()
                 {
                     UserId = feedback.UserId,
@@ -42,11 +40,12 @@ namespace FeedbackApp.BLL.Services
                 dbFeedback = await db.Feedbacks.CreateAsync(dbFeedback);
 
 
-                if (feedback.MediaFiles!=null && feedback.MediaFiles.Any())
+                if (feedback.MediaFiles != null && feedback.MediaFiles.Any())
                 {
-                    feedback.MediaFiles.Select(m => { 
-                        m.FeedbackId = dbFeedback.Id;  
-                        return mediaFileService.CreateMediaFileAsync(m); 
+                    feedback.MediaFiles.Select(m =>
+                    {
+                        m.FeedbackId = dbFeedback.Id;
+                        return mediaFileService.CreateMediaFileAsync(m);
                     });
                 }
 
@@ -63,46 +62,37 @@ namespace FeedbackApp.BLL.Services
             try
             {
                 List<Feedback> dbFeedbacks;
-                if (func == null) 
-                { 
-                    dbFeedbacks = db.Feedbacks.GetAll().ToList(); 
+                if (func == null)
+                {
+                    dbFeedbacks = db.Feedbacks.GetAll().ToList();
                 }
                 else
                 {
                     dbFeedbacks = db.Feedbacks.GetAll().Where(func).ToList();
                 }
                 return dbFeedbacks.Select(m =>
-                                                          {
-                                                              return new InfoFeedback()
-                                                              {
-                                                                  CreationDate = m.CreationDate,
-                                                                  AuthorName = m.User.UserName,
-                                                                  ProductName = m.Product.Name,
-                                                                  Rate = m.Rate,
-                                                                  Text = m.Text,
-                                                                  Comments = m.Comments.Select(n =>
-                                                                  {
-                                                                      return new InfoComment()
-                                                                      {
-                                                                          CreationDate = n.CreationDate,
-                                                                          AuthorName = n.User.UserName,
-                                                                          ProductName = n.Feedback.Product.Name,
-                                                                          Text = n.Text,
-                                                                          FeedbackId = n.FeedbackId
-                                                                      };
-                                                                  }).ToList(),
-                                                                  MediaFiles = m.MediaFiles.Select(e =>
-                                                                  {
-                                                                      return new CreateMediaFile()
-                                                                      {
-                                                                          FeedbackId = e.FeedbackId,
-                                                                          //Name = e.Name,
-                                                                          Path = e.Path,
-                                                                          //Type = e.Type
-                                                                      };
-                                                                  }).ToList()
-                                                              };
-                                                          }).ToList();
+                {
+                    return new InfoFeedback()
+                    {
+                        Id = m.Id,
+                        CreationDate = m.CreationDate,
+                        AuthorName = m.User?.UserName,
+                        ProductName = m.Product.Name,
+                        Rate = m.Rate,
+                        Text = m.Text,
+                        Comments = m.Comments.Select(n =>
+                        {
+                            return new InfoComment()
+                            {
+                                CreationDate = n.CreationDate,
+                                AuthorName = n.User.UserName,
+                                ProductName = n.Feedback.Product.Name,
+                                Text = n.Text,
+                                FeedbackId = n.FeedbackId
+                            };
+                        }).ToList()
+                    };
+                }).ToList();
             }
             catch (Exception ex)
             {

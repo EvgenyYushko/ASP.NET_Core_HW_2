@@ -4,7 +4,6 @@ using FeedbackApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,6 +26,20 @@ namespace FeedbackApp.PL.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult FeedBackList()
+        {
+            var infoFeedBackList = _feedbackService.FindFeedbacksByFunc(null);
+            return View(infoFeedBackList);
+        }
+
+        [HttpGet]
+        public ActionResult GetFeedbackById(Guid id)
+        {
+            var feedback = _feedbackService.FindFeedbacksByFunc(f => f.Id == id).SingleOrDefault();
+            return View(feedback);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateFeedBack(FeedbackVM model)
         {
@@ -36,15 +49,20 @@ namespace FeedbackApp.PL.Controllers
 
                 Guid guid = new Guid(currentUser.Id);
 
-                CreateFeedback feedback = new CreateFeedback { UserId = guid, Text = model.Text, ProductCategory = "Телефоны", ProductName = "Самсунг", Rate = 2 };
+                CreateFeedback feedback = new CreateFeedback
+                {
+                    UserId = guid,
+                    Text = model.Text,
+                    ProductCategory = model.ProductCategory,
+                    ProductName = model.ProductName,
+                    Rate = model.Rate
+                };
 
-                var result = await _feedbackService.CreateFeedbackAsync(feedback);
-
-                var infoFb = _feedbackService.FindFeedbacksByFunc(f => f.Id == result).FirstOrDefault();
-                model = new FeedbackVM { Text = infoFb.Text };
+                var feedBackId = await _feedbackService.CreateFeedbackAsync(feedback);
+                return RedirectToAction(nameof(GetFeedbackById), feedBackId);
             }
-           
-            return View(model);
+
+            return View();
         }
     }
 }

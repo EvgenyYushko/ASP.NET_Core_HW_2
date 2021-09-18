@@ -1,5 +1,4 @@
 ﻿using FeedbackApp.BLL.VMs.Feedback;
-using FeedbackApp.BLL.VMs.Product;
 using FeedbackApp.Models;
 using System;
 using System.Collections.Generic;

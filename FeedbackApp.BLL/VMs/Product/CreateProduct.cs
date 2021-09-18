@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FeedbackApp.BLL.VMs.Product
+﻿namespace FeedbackApp.BLL.VMs.Product
 {
     public class CreateProduct
     {
